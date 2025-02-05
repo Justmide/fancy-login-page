@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fancy Spotify Login Page</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="appleid-signin-client-id" content="[CLIENT_ID]">
+    <meta name="appleid-signin-scope" content="[SCOPES]">
+    <meta name="appleid-signin-redirect-uri" content="[REDIRECT_URI]">
+    <meta name="appleid-signin-state" content="[STATE]">
+</head>
+<style>
+    body{
+      background:#111;
+      color:#ddd;
+      font-weight:300;
+      font-family: 'Source Sans Pro', sans-serif;
+    }
+    body > .container{
+      position:relative;
+      width:100%;
+      height:100%;
+      z-index:40;
+    }
+    
+
+body::before{
+    background-size:100% 100%;
+    height:1px;
+    top:1px;
+    background: -moz-linear-gradient(left,  rgba(255,255,255,0) 0%, rgba(255,255,255,0.74) 25%, rgba(255,255,255,0) 50%, rgba(255,255,255,0) 100%);
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(255,255,255,0)), color-stop(25%,rgba(255,255,255,0.74)), color-stop(50%,rgba(255,255,255,0)), color-stop(100%,rgba(255,255,255,0)));
+    background: -webkit-linear-gradient(left,  rgba(255,255,255,0) 0%,rgba(255,255,255,0.74) 25%,rgba(255,255,255,0) 50%,rgba(255,255,255,0) 100%);
+    background: -o-linear-gradient(left,  rgba(255,255,255,0) 0%,rgba(255,255,255,0.74) 25%,rgba(255,255,255,0) 50%,rgba(255,255,255,0) 100%);
+    background: -ms-linear-gradient(left,  rgba(255,255,255,0) 0%,rgba(255,255,255,0.74) 25%,rgba(255,255,255,0) 50%,rgba(255,255,255,0) 100%);
+    background: linear-gradient(to right,  rgba(255,255,255,0) 0%,rgba(255,255,255,0.74) 25%,rgba(255,255,255,0) 50%,rgba(255,255,255,0) 100%);
+}
+
+.loader{
+        position:absolute;
+        width: 100%;
+        height: 100%;
+        left:0%;
+        top:0%;
+        /* margin-left:-160px;
+        margin-top:-120px; */
+        border-radius:4px;
+        transition:opacity 400ms , visibility 400ms;
+        z-index: 999999;
+
+}
+
+.fade {
+    opacity: 0;
+    visibility: hidden;
+}
+
+@keyframes pulse{
+    0%{
+      height:0%;
+      box-shadow:0 0 4px rgba(0,0,0,1.0);
+    }
+    20%{
+      background:rgba(255,255,255,0.5);
+      height:100%;
+      box-shadow:0 0 8px rgba(255,255,255,0.0);
+    }
+    50%{
+      background:#1ed75fc5;
+      box-shadow:0 0 8px #1ed75fc5;
+    }
+    80%{
+      background:rgba(255,255,255,0.5);
+      height:100%;
+      box-shadow:0 0 8px rgba(255,255,255,0.0);
+    }
+    100%{
+      height:0%;
+      box-shadow:0 0 4px rgba(0,0,0,1.0);
+    }
+}
+
+.loader > ul{
+    list-style:none;
+    position:absolute;
+    width:120px;
+    height:120px;
+    left:50%;
+    top:50%;
+    margin:-60px -80px;
+    
+}
+
+.loader li{
+ width:4px;
+ height: 150px;
+ border-radius:2px;
+ background:#050505;    
+ position:absolute;
+ left:50%;
+ top:10px;
+ margin-left:-2px;
+ transform-origin:2px 50px;
+    box-shadow:1px 0 0 rgba(255,255,255,0.1);
+}
+
+.loader li div{
+    border-radius:2px;
+    width:4px;
+    background:rgba(255,255,255,0.5);
+    position:absolute;
+    bottom:0px;
+    left:0px;
+    animation:pulse 6s normal infinite;
+}
+
+ul>li:nth-of-type(1){
+ transform:rotate(0deg);   
+ box-shadow:0 1px 0 rgba(255,255,255,0.1);
+}
+
+ul>li:nth-of-type(1)>div{
+ animation-delay:100ms;   
+}
+
+ul>li:nth-of-type(2){
+ transform:rotate(30deg);   
+}
+
+ul>li:nth-of-type(2)>div{
+ animation-delay:200ms;   
+}
+
+
+ul>li:nth-of-type(3){
+ transform:rotate(60deg);   
+}
+
+ul>li:nth-of-type(3)>div{
+ animation-delay:300ms;   
+}
+
+
+ul>li:nth-of-type(4){
+ transform:rotate(90deg);   
+}
+
+ul>li:nth-of-type(4)>div{
+ animation-delay:400ms;   
+}
+
+
+ul>li:nth-of-type(5){
+ transform:rotate(120deg);   
+}
+
+ul>li:nth-of-type(5)>div{
+ animation-delay:500ms;   
+}
+
+
+ul>li:nth-of-type(6){
+ transform:rotate(150deg);   
+}
+
+ul>li:nth-of-type(6)>div{
+ animation-delay:600ms;   
+}
+
+
+ul>li:nth-of-type(7){
+ transform:rotate(180deg);   
+ box-shadow:0 -1px 0 rgba(255,255,255,0.1);
+}
+
+ul>li:nth-of-type(7)>div{
+ animation-delay:700ms;   
+}
+
+
+ul>li:nth-of-type(8){
+ transform:rotate(210deg);   
+ box-shadow:-1px 0 0 rgba(255,255,255,0.1);
+}
+
+ul>li:nth-of-type(8)>div{
+  animation-delay:800ms;   
+}
+
+
+ul>li:nth-of-type(9){
+ transform:rotate(240deg);   
+ box-shadow:-1px 0 0 rgba(255,255,255,0.1);
+}
+ul>li:nth-of-type(9)>div{
+ animation-delay:900ms;   
+}
+
+
+ul>li:nth-of-type(10){
+ transform:rotate(270deg);   
+ box-shadow:-1px 0 0 rgba(255,255,255,0.1);
+}
+ul>li:nth-of-type(10)>div{
+ animation-delay:1000ms;   
+}
+
+
+
+ul>li:nth-of-type(11){
+ transform:rotate(300deg);   
+ box-shadow:-1px 0 0 rgba(255,255,255,0.1);
+}
+
+ul>li:nth-of-type(11)>div{
+ animation-delay:1100ms;   
+}
+
+
+ul>li:nth-of-type(12){
+ transform:rotate(330deg);   
+ box-shadow:-1px 0 0 rgba(255,255,255,0.1);
+}
+
+ul>li:nth-of-type(12)>div{
+ animation-delay:1200ms;   
+}
+.loader{
+background: rgb(5,5,5);
+background: -moz-linear-gradient(45deg,  rgba(5,5,5,1) 0%, rgba(16,16,16,1) 100%);
+background: -webkit-gradient(linear, left bottom, right top, color-stop(0%,rgba(5,5,5,1)), color-stop(100%,rgba(16,16,16,1)));
+background: -webkit-linear-gradient(45deg,  rgba(5,5,5,1) 0%,rgba(16,16,16,1) 100%);
+background: -o-linear-gradient(45deg,  rgba(5,5,5,1) 0%,rgba(16,16,16,1) 100%);
+background: -ms-linear-gradient(45deg,  rgba(5,5,5,1) 0%,rgba(16,16,16,1) 100%);
+background: linear-gradient(45deg,  rgba(5,5,5,1) 0%,rgba(16,16,16,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#050505', endColorstr='#101010',GradientType=1 );
+
+    position:absolute;
+    width: 100%;
+    height: 100%;
+    left:0%;
+    top:0%;
+     /* margin-left:-160px;
+     margin-top:-120px; */
+    border-radius:4px;
+    border-radius:4px;
+    
+    box-shadow:0 0 4px 0px rgba(0,0,0,0.6),inset 0px 1px 0px #000,inset 0px -1px 0px #000,inset 1px 0px 0px #000,inset -1px 0px 0px #000;
+}
+
+.loader::after{
+background: -moz-radial-gradient(center, ellipse cover,  rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.03) 49%, rgba(255,255,255,0.02) 50%, rgba(255,255,255,0.02) 100%);
+background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,rgba(255,255,255,0.03)), color-stop(49%,rgba(255,255,255,0.03)), color-stop(50%,rgba(255,255,255,0.02)), color-stop(100%,rgba(255,255,255,0.02)));
+background: -webkit-radial-gradient(center, ellipse cover,  rgba(255,255,255,0.03) 0%,rgba(255,255,255,0.03) 49%,rgba(255,255,255,0.02) 50%,rgba(255,255,255,0.02) 100%);
+background: -o-radial-gradient(center, ellipse cover,  rgba(255,255,255,0.03) 0%,rgba(255,255,255,0.03) 49%,rgba(255,255,255,0.02) 50%,rgba(255,255,255,0.02) 100%);
+background: -ms-radial-gradient(center, ellipse cover,  rgba(255,255,255,0.03) 0%,rgba(255,255,255,0.03) 49%,rgba(255,255,255,0.02) 50%,rgba(255,255,255,0.02) 100%);
+background: radial-gradient(ellipse at center,  rgba(255,255,255,0.03) 0%,rgba(255,255,255,0.03) 49%,rgba(255,255,255,0.02) 50%,rgba(255,255,255,0.02) 100%);
+    position:absolute;
+    width:100%;
+    height:100%;
+    background-size:200% 240%;
+    top:0px;
+    left:0px;
+    z-index:4;
+    content:' ';
+}
+
+.loader h4{
+   text-align:center;
+   width:100%;
+   position:absolute;
+   bottom: 20px;
+   font-size: 20px;
+   font-family: "Edu AU VIC WA NT Arrows", cursive;
+   font-weight:300;
+
+}
+
+
+</style>
+<body>
+<section class="firstSection">
+    <img src="./" alt="">
+<div class="container">
+    <div class="logo">
+        <p class="specialT">Musify</p>
+        <div class="formSect">
+            <form action="" method="get">
+                <h1>Welcome back</h1>
+                <p class="subheading">Please enter your account details</p>
+                <p class="alreadyUser">New User? <a href="./index.html" id="login-link">Sign Up</a> </p>
+                <!-- <input type="text" placeholder="First Name" required class="fn">
+                <input type="text" placeholder="Last Name" required class="fn"> -->
+                <input type="email" placeholder="Email address" required class="email">
+                <input type="password" placeholder="Password" required class="password">
+                <div class="boxSelect">
+                    <input type="checkbox" name="terms" id="terms" class="terms" required> 
+                <label for="txtBox" class="chekbox" > Save Login
+                </div>
+               <button type="submit">LOGIN</button>
+               <div class="or">
+                <div class="leftline">
+
+                </div>
+                <p class="orText">Or Login with</p>
+                <div class="leftline">
+
+                </div>
+               </div>
+               <div class="OauthLogin">
+                <div id="appleid-signin" class="signin-button" data-color="white" data-border="true" data-type="sign-in"></div>
+             
+               <div id="g_id_onload"
+        data-client_id="YOUR_GOOGLE_CLIENT_ID"
+        data-login_uri="https://your.domain/your_login_endpoint"
+        data-auto_prompt="false">
+    </div>
+    <div class="g_id_signin"
+        data-type="standard"
+        data-size="large"
+        data-theme="outline"
+        data-text="sign_in_with"
+        data-shape="rectangular"
+        data-logo_alignment="left">
+    </div>
+</div>
+            </form>
+        </div>
+    </div>
+
+  
+
+
+    <div class="rightDisplaySect">
+        <div class="rad">
+        
+        </div>
+        
+        <!-- <div class="rightHighlight">
+            <p class="rH1">Latest Music Playlist for youuuu!!!!!</p>
+        </div> -->
+        <main class="body">
+            <div class="slider">
+              <div class="item">
+                <img src="./images/wizkid-morayo-album-cover-tgj.jpeg" loading="eager" alt="">
+                <div class='content'>
+                  <h2 class='title'>"Morayo - Wizkid"</h2>
+                  <p class='description'> Morayo is the sixth studio album by Nigerian singer Wizkid. It was released on 22 November 2024 through RCA Records and Starboy Entertainment.  </p>
+                  <button><a href="https://open.spotify.com/album/3dLXfyaG1kYeSQknLs2LP1">Read More</a></button>
+                </div>
+              </div>
+              <!-- visibele item -->
+              <div class="item">
+                <img src="./images/burna-boy-new-album-i-told-them.jpg" loading="eager" alt="Nobis Omnis" class="image" />
+                <div class='content'>
+                  <h2 class='title'>"I told them "</h2>
+                  <p class='description'>I Told Them - Burna Boy... is the seventh studio album by Nigerian singer Burna Boy. It was released on 25 August 2023, through Atlantic, Spaceship Records, and Bad Habit.  </p>
+                  <button><a href="https://open.spotify.com/album/1JzjwUKkPsdHg1SQ7qa5hc?autoplay=true">Read More</a></button>
+                </div>
+              </div>
+              <div class="item">
+                <img src="./images/Davido_-_Timeless_album_cover.jpg" loading="eager" alt="Ut Distinctio" class="image" />
+                <div class='content'>
+                  <h2 class='title'>"Timeless - Davido"</h2>
+                  <p class='description'> Timeless is the fourth studio album by Nigerian singer Davido. It was released on 31 March 2023, through Davido Music Worldwide, Columbia Records, and Sony Music Entertainment. </p>
+                  <button><a href="https://open.spotify.com/album/6lI21W76LD0S3vC55GrfSS?autoplay=true">Read More</a></button>
+                </div>
+              </div>
+              <div class='item'>
+                <img src="./images/lungu boy.jpg" loading="eager" alt="Commodi Veniam" class="image" />
+                <div class='content'>
+                  <h2 class='title'>"Lungu Boy - Asake"</h2>
+                  <p class='description'>
+                    Lungu Boy is the third studio album by Nigerian singer Asake. A follow-up to his previous album, Work of Art, the album was released on 9 August 2024 through YBNL Nation and Empire Distribution. 
+                  </p>
+                  <button><a href="https://open.spotify.com/album/3kS42vslfpYnxWkGN4JvlW?autoplay=true">Read More</a></button>
+                </div>
+              </div>
+              <div class="item">
+                <img src="./images/ayra star.jpg" loading="eager" alt="Ipsam Tenetur" class="image" />
+                <div class='content'>
+                  <h2 class='title'>"The Year I Turn 21"</h2>
+                  <p class='description'>
+                    The Year I Turn 21 is the second studio album by Nigerian singer-songwriter Ayra Starr. It was released through Mavin Records on 31 May 2024. 
+                  </p>
+                  <button><a href="https://open.spotify.com/album/1W25XYjRQPob14CkgOYVms?autoplay=true">Read More</a></button>
+                </div>
+              </div>
+              <div class="item">
+                <img src="./images/seyi.jpg" loading="eager" alt="Nesciunt Consectetur Similique Sit" class="image" />
+                <div class='content'>
+                  <h2 class='title'>"Loseyi Professor"</h2>
+                  <p class='description'> “Loseyi Professor,” demonstrates a willingness to experiment and adapt without losing the essence of his lyrical originality.</p>
+                  <button><a href="https://open.spotify.com/album/38tvoGnBsZNd8FJg2YsCT4?autoplay=true">Read More</a></button>
+                </div>
+              </div>
+            </div>
+            <nav class='nav'>
+              <ion-icon class='btn prev' name="arrow-back-outline"></ion-icon>
+              <ion-icon class='btn next' name="arrow-forward-outline"></ion-icon>
+            </nav>
+          </main>
+          
+          
+        
+            </div>
+        </div>
+        
+        <!-- loading animation on click]
+         ] -->
+            <div class="loader">
+                <ul>
+                    <li><div></div></li>
+                    <li><div></div></li>
+                    <li><div></div></li>
+                    <li><div></div></li>
+                    <li><div></div></li>
+                    <li><div></div></li>
+                    <li><div></div></li>
+                    <li><div></div></li>
+                    <li><div></div></li>
+                    <li><div></div></li>
+                    <li><div></div></li>
+                    <li><div></div></li>
+                </ul>
+                <h4>"MUSIC IS LIFE"</h4>
+            </div>
+        </section>
+        
+        <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+          <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+        <script src="https://accounts.google.com/gsi/client" async></script>
+        <script type="text/javascript" src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js"></script>
+        <script src="./index.js"></script>
+        </body>
+        </html>
